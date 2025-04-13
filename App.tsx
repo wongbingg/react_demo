@@ -5,81 +5,26 @@
 //  * @format
 //  */
 
-import React, { useState } from 'react';
-import {
-  Text,
-  TextInput,
-  View,
-  Image,
-  Button,
-  ScrollView,
-  StyleSheet,
-  StatusBar,
-  Alert,
-  Platform,
-  FlatList,
-  SectionList,
-  TouchableHighlight,
-  TouchableOpacity,
-  TouchableNativeFeedback,
-  TouchableWithoutFeedback,
-} from 'react-native';
+import React, {useState} from 'react'
+import { NavigationContainer } from '@react-navigation/native'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import LoginScreen from './screens/LoginScreen'
+import HomeScreen from './screens/HomeScreen'
 
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-
-export type Props = {
-  name: string;
-  baseEnthusiasmLevel?: number;
+export type RootStackParamList = {
+  Login: undefined
+  Home: undefined
 }
 
-const App: React.FC<Props> = ({
-  name,
-  baseEnthusiasmLevel = 0,
-}) => {
-  const Container = Platform.OS === 'ios' ? SafeAreaView : View; // TODO: 플랫폼별 분기처리로 SafeArea 적용 
+const Stack = createNativeStackNavigator<RootStackParamList>()
 
-  const [enthusiasmLevel, setEnthusiasmLevel] = React.useState(baseEnthusiasmLevel,);
-  const onIncrement = () => setEnthusiasmLevel(enthusiasmLevel + 1);
-  const onDecrement = () => setEnthusiasmLevel(enthusiasmLevel > 0 ? enthusiasmLevel - 1 : 0);
-  const getExclamationMarks = (numChars: number) =>
-    numChars > 0 ? Array(numChars + 1).join('!') : '';
-
-
-
+export default function App() {
   return (
-    <SafeAreaProvider>
-      <Container style={styles.container} edges={['top', 'bottom']}>
-        <Text
-          style={{ fontSize: 35 }}>
-          Hello {name} {getExclamationMarks(enthusiasmLevel)}
-        </Text>
-        <Button
-          title="Increase enthusiasm"
-          accessibilityLabel='increment'
-          onPress={onIncrement}
-          color='blue' />
-        <Button
-          title='Decrease enthusiasm'
-          accessibilityLabel='decrement'
-          onPress={onDecrement}
-          color='red' />
-        <View style={{height: '100%'}}>
-          <View style={{width: '66%', height: '35%', backgroundColor: 'powderblue'}}/>
-          <View style={{width: '33%', height: '20%', backgroundColor: 'skyblue'}}/>
-          <View style={{width: '50%', height: '33%', backgroundColor: 'steelblue'}}/>
-        </View>
-      </Container>
-    </SafeAreaProvider>
-  );
-};
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'white',
-    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0, // 이건 android의 statusBarHeight만 해당 
-    paddingBottom: Platform.OS === 'android' ? 30 : 0,
-  },
-});
-
-export default App;
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false}}>
+        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="Home" component={HomeScreen} />
+      </Stack.Navigator> 
+    </NavigationContainer>
+  )
+}
