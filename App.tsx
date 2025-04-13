@@ -27,38 +27,42 @@ import {
 
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
-const App = () => {
+export type Props = {
+  name: string;
+  baseEnthusiasmLevel?: number;
+}
+
+const App: React.FC<Props> = ({
+  name,
+  baseEnthusiasmLevel = 0,
+}) => {
   const Container = Platform.OS === 'ios' ? SafeAreaView : View; // TODO: 플랫폼별 분기처리로 SafeArea 적용 
-  const handleScroll = (event: any) => {
-    const y = event.nativeEvent.contentOffset.y;
-    console.log('스크롤 위치 y:', y);
-  }
+  
+  const [enthusiasmLevel, setEnthusiasmLevel] = React.useState(baseEnthusiasmLevel,);
+  const onIncrement = () => setEnthusiasmLevel(enthusiasmLevel + 1);
+  const onDecrement = () => setEnthusiasmLevel(enthusiasmLevel > 0 ? enthusiasmLevel - 1 : 0);
+  const getExclamationMarks = (numChars: number) =>
+    numChars > 0 ? Array(numChars + 1).join('!') : '';
+
+  
+
   return (
     <SafeAreaProvider>
       <Container style={styles.container} edges={['top', 'bottom']}>
-        <SectionList
-          sections={[
-            {
-              title: 'D',
-              data: ['Devin', 'Dan', 'Dominic']
-            },
-            {
-              title: 'J',
-              data: ['Jackson','James','Jillian','Jimmy','Joel','John','Julie']
-            },
-            {
-              title: 'I',
-              data: ['Jackson','James','Jillian','Jimmy','Joel','John','Julie']
-            },
-            {
-              title: 'G',
-              data: ['Jackson','James','Jillian','Jimmy','Joel','John','Julie']
-            }
-          ]}
-          renderItem={({item}) => <Text style={styles.item}>{item}</Text>}
-          renderSectionHeader={({section}) => <Text style={styles.sectionHeader}>{section.title}</Text>}
-          keyExtractor={item => `basicListEntry-${item}`} // 특이하게 백틱(`) 을 사용했음. 
-        />
+        <Text
+          style={{fontSize: 35}}>
+          Hello {name} {getExclamationMarks(enthusiasmLevel)}
+        </Text>
+        <Button
+          title="Increase enthusiasm"
+          accessibilityLabel='increment'
+          onPress={onIncrement}
+          color='blue'/>
+          <Button
+            title='Decrease enthusiasm'
+            accessibilityLabel='decrement'
+            onPress={onDecrement}
+            color='red'/>
       </Container>
     </SafeAreaProvider>
   );
@@ -70,27 +74,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0, // 이건 android의 statusBarHeight만 해당 
     paddingBottom: Platform.OS === 'android' ? 30 : 0,
-  },
-  scrollView: {
-    backgroundColor: 'pink',
-  },
-  text: {
-    fontSize: 42,
-    padding: 12,
-  },
-  sectionHeader: {
-    paddingTop: 2,
-    paddingLeft: 10,
-    paddingRight: 10,
-    paddingBottom: 2,
-    fontSize: 14,
-    fontWeight: 'bold',
-    backgroundColor: 'rgba(247, 247, 247,1.0)'
-  },
-  item: {
-    padding: 10,
-    fontSize: 18,
-    height: 44,
   },
 });
 
