@@ -14,6 +14,7 @@ import {
   Button,
   ScrollView,
   StyleSheet,
+  StatusBar,
   Alert,
   Platform,
   TouchableHighlight,
@@ -22,72 +23,42 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 
-const App = () => {
-  const onPressButton = () => {
-    Alert.alert('You tapped the button!')
-  };
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
-  const onLongPressButton = () => {
-    Alert.alert('You long-pressed the button!');
-  }
+const App = () => {
+  const Container = Platform.OS === 'ios' ? SafeAreaView : View; // TODO: 플랫폼별 분기처리로 SafeArea 적용 
 
   return (
-    <View style={styles.container}>
-      <TouchableHighlight onPress={onPressButton} underlayColor={'white'}>
-        <View style={styles.button}>
-          <Text style={styles.buttonText}>TouchableHighlight</Text>
-        </View>
-      </TouchableHighlight>
-      <TouchableOpacity onPress={onPressButton}>
-        <View style={styles.button}>
-          <Text style={styles.buttonText}>TouchableOpacity</Text>
-        </View>
-      </TouchableOpacity>
-      <TouchableNativeFeedback 
-      onPress={onPressButton}
-      background={
-        Platform.OS === 'android' ? 
-        TouchableNativeFeedback.SelectableBackground() : undefined
-      }>
-      <View style={styles.button}>
-        <Text style={styles.buttonText}>
-          TouchableNativeFeedback{' '}
-          {Platform.OS !== 'android' ? '(Android only)' : ''}
-        </Text>
-      </View>
-      </TouchableNativeFeedback>
-      <TouchableWithoutFeedback onPress={onPressButton}>
-        <View style={styles.button}>
-          <Text style={styles.buttonText}>TouchableWithoutFeedback</Text>
-        </View>
-      </TouchableWithoutFeedback>
-      <TouchableHighlight
-        onPress={onPressButton}
-        onLongPress={onLongPressButton}
-        underlayColor={'white'}>
-          <View style={styles.button}>
-            <Text style={styles.buttonText}>Touchable with Long Press</Text>
-          </View>
-        </TouchableHighlight>
-    </View>
-  )
+    <SafeAreaProvider>
+      <Container style={styles.container} edges={['top', 'bottom']}>
+        <ScrollView style={styles.scrollView} zoomScale={3}>
+          <Text style={styles.text}>
+          Lorem123 ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+          aliquip ex ea commodo consequat. Duis aute irure dolor in
+          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+          culpa qui officia deserunt mollit anim id est laborum.
+          </Text>
+        </ScrollView>
+      </Container>
+    </SafeAreaProvider>
+  );
 };
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 60,
-    alignItems: 'center',
+    flex: 1,
+    backgroundColor: 'white',
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0, // 이건 android의 statusBarHeight만 해당 
   },
-  button: {
-    marginBottom: 30,
-    width: 260,
-    alignItems: 'center',
-    backgroundColor: '#2196F3',
+  scrollView: {
+    backgroundColor: 'pink',
   },
-  buttonText: {
-    textAlign: 'center',
-    padding: 20,
-    color: 'white',
+  text: {
+    fontSize: 42,
+    padding: 12,
   }
 });
 
