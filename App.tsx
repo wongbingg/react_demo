@@ -18,6 +18,7 @@ import {
   Alert,
   Platform,
   FlatList,
+  SectionList,
   TouchableHighlight,
   TouchableOpacity,
   TouchableNativeFeedback,
@@ -35,41 +36,29 @@ const App = () => {
   return (
     <SafeAreaProvider>
       <Container style={styles.container} edges={['top', 'bottom']}>
-        <FlatList
-        data={[
-          {key: 'Devin'},
-          {key: 'Dan'},
-          {key: 'Dominic'},
-          {key: 'Jackson'},
-          {key: 'James'},
-          {key: 'Joel'},
-          {key: 'John'},
-          {key: 'Jillian'},
-          {key: 'Jimmy'},
-          {key: 'Julie1'},
-          {key: 'Julie2'},
-          {key: 'Julie3'},
-          {key: 'Julie4'},
-          {key: 'Julie5'},
-          {key: 'Julie6'},
-          {key: 'Julie7'},
-          {key: 'Julie8'},
-          {key: 'Julie9'},
-          {key: 'Julie0'},
-          {key: 'Julie11'},
-          {key: 'Julie12'},
-          {key: 'Julie13'},
-          {key: 'Julie14'},
-          {key: 'Julie15'},
-        ]}
-        renderItem={({item}) => 
-        <Text style={styles.item}>
-          {item.key}
-        </Text>
-      }
-        >
-          
-        </FlatList>
+        <SectionList
+          sections={[
+            {
+              title: 'D',
+              data: ['Devin', 'Dan', 'Dominic']
+            },
+            {
+              title: 'J',
+              data: ['Jackson','James','Jillian','Jimmy','Joel','John','Julie']
+            },
+            {
+              title: 'I',
+              data: ['Jackson','James','Jillian','Jimmy','Joel','John','Julie']
+            },
+            {
+              title: 'G',
+              data: ['Jackson','James','Jillian','Jimmy','Joel','John','Julie']
+            }
+          ]}
+          renderItem={({item}) => <Text style={styles.item}>{item}</Text>}
+          renderSectionHeader={({section}) => <Text style={styles.sectionHeader}>{section.title}</Text>}
+          keyExtractor={item => `basicListEntry-${item}`} // 특이하게 백틱(`) 을 사용했음. 
+        />
       </Container>
     </SafeAreaProvider>
   );
@@ -88,6 +77,15 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 42,
     padding: 12,
+  },
+  sectionHeader: {
+    paddingTop: 2,
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingBottom: 2,
+    fontSize: 14,
+    fontWeight: 'bold',
+    backgroundColor: 'rgba(247, 247, 247,1.0)'
   },
   item: {
     padding: 10,
