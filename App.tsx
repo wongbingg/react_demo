@@ -17,6 +17,7 @@ import {
   StatusBar,
   Alert,
   Platform,
+  FlatList,
   TouchableHighlight,
   TouchableOpacity,
   TouchableNativeFeedback,
@@ -34,21 +35,41 @@ const App = () => {
   return (
     <SafeAreaProvider>
       <Container style={styles.container} edges={['top', 'bottom']}>
-        <ScrollView 
-        style={styles.scrollView} 
-        onScroll={handleScroll}
-        scrollEventThrottle={1000}
+        <FlatList
+        data={[
+          {key: 'Devin'},
+          {key: 'Dan'},
+          {key: 'Dominic'},
+          {key: 'Jackson'},
+          {key: 'James'},
+          {key: 'Joel'},
+          {key: 'John'},
+          {key: 'Jillian'},
+          {key: 'Jimmy'},
+          {key: 'Julie1'},
+          {key: 'Julie2'},
+          {key: 'Julie3'},
+          {key: 'Julie4'},
+          {key: 'Julie5'},
+          {key: 'Julie6'},
+          {key: 'Julie7'},
+          {key: 'Julie8'},
+          {key: 'Julie9'},
+          {key: 'Julie0'},
+          {key: 'Julie11'},
+          {key: 'Julie12'},
+          {key: 'Julie13'},
+          {key: 'Julie14'},
+          {key: 'Julie15'},
+        ]}
+        renderItem={({item}) => 
+        <Text style={styles.item}>
+          {item.key}
+        </Text>
+      }
         >
-          <Text style={styles.text}>
-          Lorem123 ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Duis aute irure dolor in
-          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-          culpa qui officia deserunt mollit anim id est laborum.
-          </Text>
-        </ScrollView>
+          
+        </FlatList>
       </Container>
     </SafeAreaProvider>
   );
@@ -67,7 +88,12 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 42,
     padding: 12,
-  }
+  },
+  item: {
+    padding: 10,
+    fontSize: 18,
+    height: 44,
+  },
 });
 
 export default App;
