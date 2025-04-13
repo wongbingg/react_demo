@@ -63,10 +63,10 @@ const App: React.FC<Props> = ({
           accessibilityLabel='decrement'
           onPress={onDecrement}
           color='red' />
-        <View style={{flex: 1}}>
-          <View style={{flex: 1, backgroundColor: 'powderblue'}}/>
-          <View style={{flex: 2, backgroundColor: 'skyblue'}}/>
-          <View style={{flex: 3, backgroundColor: 'steelblue'}}/>
+        <View style={{height: '100%'}}>
+          <View style={{width: '66%', height: '35%', backgroundColor: 'powderblue'}}/>
+          <View style={{width: '33%', height: '20%', backgroundColor: 'skyblue'}}/>
+          <View style={{width: '50%', height: '33%', backgroundColor: 'steelblue'}}/>
         </View>
       </Container>
     </SafeAreaProvider>
