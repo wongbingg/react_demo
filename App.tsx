@@ -27,11 +27,18 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 const App = () => {
   const Container = Platform.OS === 'ios' ? SafeAreaView : View; // TODO: 플랫폼별 분기처리로 SafeArea 적용 
-
+  const handleScroll = (event: any) => {
+    const y = event.nativeEvent.contentOffset.y;
+    console.log('스크롤 위치 y:', y);
+  }
   return (
     <SafeAreaProvider>
       <Container style={styles.container} edges={['top', 'bottom']}>
-        <ScrollView style={styles.scrollView} zoomScale={3}>
+        <ScrollView 
+        style={styles.scrollView} 
+        onScroll={handleScroll}
+        scrollEventThrottle={1000}
+        >
           <Text style={styles.text}>
           Lorem123 ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
