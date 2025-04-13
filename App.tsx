@@ -59,6 +59,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0, // 이건 android의 statusBarHeight만 해당 
+    paddingBottom: Platform.OS === 'android' ? 30 : 0,
   },
   scrollView: {
     backgroundColor: 'pink',
