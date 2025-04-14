@@ -23,10 +23,27 @@ const Stack = createNativeStackNavigator<RootStackParamList>()
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="Home" component={HomeScreen} options={{gestureEnabled: false,}} />
-        <Stack.Screen name="Profile" component={ProfileScreen} />
+      <Stack.Navigator
+        initialRouteName="Login"
+        screenOptions={{ headerShown: true }}
+      >
+        <Stack.Screen
+          name="Login"
+          component={LoginScreen}
+        />
+        <Stack.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{
+            headerLeft: () => null,
+            headerBackVisible: false,
+            gestureEnabled: false,
+          }}
+        />
+        <Stack.Screen
+          name="Profile"
+          component={ProfileScreen}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   )

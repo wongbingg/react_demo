@@ -1,17 +1,17 @@
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, Button, StyleSheet } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
-import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { RootStackParamList } from '../App'
 
-type ProfileScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Profile'>
+type ProfileScreenProp = NativeStackScreenProps<RootStackParamList, 'Profile'>
 
-export default function ProfileScreen() {
-  const navigation = useNavigation<ProfileScreenNavigationProp>()
+export default function ProfileScreen({ navigation }: ProfileScreenProp) {
 
   return (
     <View style={styles.container}>
       <Text>나의 프로필 정보</Text>
+      <Button title="Pop To Top" onPress={() => navigation.popToTop()}></Button>
     </View>
   )
 }
