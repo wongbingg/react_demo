@@ -1,25 +1,31 @@
-import React, { useEffect } from 'react'
-import { View, Button, StyleSheet, BackHandler } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
-import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import React, { useCallback } from 'react'
+import { View, Button, Text, StyleSheet, BackHandler } from 'react-native'
+import { useFocusEffect } from '@react-navigation/native'
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { RootStackParamList } from '../App'
 
-type HomeScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Home'>
+type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
-export default function HomeScreen() {
-  const navigation = useNavigation<HomeScreenNavigationProp>()
-  useEffect(() => {
-    const backHandler = BackHandler.addEventListener('hardwareBackPress', () => { return true; }) // 뒤로가기 무시
-    return () => backHandler.remove();
-  }, []);
+export default function HomeScreen({ navigation, route }: HomeScreenProps) {
+  useFocusEffect(
+    useCallback(() => {
+      const backHandler = BackHandler.addEventListener('hardwareBackPress', () => { return true; }) // 뒤로가기 무시
+      return () => backHandler.remove();
+    }, [])
+  );
 
   const handleLogout = () => {
     navigation.goBack();
   }
-
+  const handleProfile = () => {
+    navigation.navigate('Profile')
+  }
+  const { id } = route.params;
   return (
     <View style={styles.container}>
+      <Text>안녕하세요, {id} 님</Text>
       <Button title="Logout" onPress={handleLogout} />
+      <Button title="Profile" onPress={handleProfile} />
     </View>
   )
 }

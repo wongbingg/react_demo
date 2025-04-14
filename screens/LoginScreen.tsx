@@ -1,20 +1,18 @@
 import React, { useState } from 'react'
 import { View, TextInput, Button, StyleSheet } from 'react-native'
-import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { RootStackParamList } from '../App'
-import { useNavigation } from '@react-navigation/native'
-import { useSafeAreaFrame } from 'react-native-safe-area-context'
 
-type LoginScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Login'>
+type LoginScreenProp = NativeStackScreenProps<RootStackParamList, 'Login'>
 
-export default function LoginScreen() {
-    const navigation = useNavigation<LoginScreenNavigationProp>()
+export default function LoginScreen({ navigation }: LoginScreenProp) {
+    // const navigation = useNavigation<LoginScreenNavigationProp>()
     const [id, setId] = useState('')
     const [pw, setPw] = useState('')
 
     const handleLogin = () => {
         if (id && pw) {
-            navigation.navigate('Home')
+            navigation.navigate('Home', { id: id })
         }
     }
 
