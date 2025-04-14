@@ -1,5 +1,5 @@
-import React from 'react'
-import { View, Button, StyleSheet } from 'react-native'
+import React, { useEffect } from 'react'
+import { View, Button, StyleSheet, BackHandler } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { RootStackParamList } from '../App'
@@ -8,9 +8,13 @@ type HomeScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'H
 
 export default function HomeScreen() {
   const navigation = useNavigation<HomeScreenNavigationProp>()
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', () => { return true; }) // 뒤로가기 무시
+    return () => backHandler.remove();
+  }, []);
 
   const handleLogout = () => {
-    navigation.replace('Login') // replace로 히스토리 지움
+    navigation.goBack();
   }
 
   return (
