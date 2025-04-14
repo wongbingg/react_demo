@@ -25,11 +25,16 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator
         initialRouteName="Login"
-        screenOptions={{ headerShown: true }}
+        screenOptions={{
+          headerShown: true,
+        }}
       >
         <Stack.Screen
           name="Login"
           component={LoginScreen}
+          options={{
+            headerShown: false,
+          }}
         />
         <Stack.Screen
           name="Home"
@@ -46,5 +51,5 @@ export default function App() {
         />
       </Stack.Navigator>
     </NavigationContainer>
-  )
+  );
 }

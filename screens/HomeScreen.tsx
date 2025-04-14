@@ -1,14 +1,11 @@
-import React, { useCallback } from 'react'
+import React, { useState } from 'react';
 import {
-  View, Button, Text, StyleSheet, BackHandler, Alert,
-  ScrollView, ImageBackground, Animated, useWindowDimensions, useAnimatedValue,
-  Platform,
-} from 'react-native'
+  View, Button, Text, StyleSheet, BackHandler, ScrollView, ImageBackground, Animated, useWindowDimensions, useAnimatedValue, Platform, Modal, TouchableOpacity,
+} from 'react-native';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
-import { useFocusEffect } from '@react-navigation/native'
-import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import { RootStackParamList } from '../App'
-import { Image } from 'react-native-reanimated/lib/typescript/Animated';
+import { useFocusEffect } from '@react-navigation/native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../App';
 
 const images = new Array(6).fill(
   // 'https://images.unsplash.com/photo-1673678886475-3a2f8c5d0b1e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60'
@@ -16,38 +13,50 @@ const images = new Array(6).fill(
 );
 type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
-export default function HomeScreen({ navigation, route }: HomeScreenProps) {
-  const scrollX = useAnimatedValue(0);
+const CustomAlert = ({ visible, onClose, onConfirm }: { visible: boolean, onClose: () => void, onConfirm: () => void }) => {
+  return (
+    <Modal
+      transparent
+      visible={visible}
+      animationType="fade"
+      onRequestClose={onClose}
+    >
+      <View style={styles.modalOverlay}>
+        <View style={styles.alertContainer}>
+          <Text style={styles.alertTitle}>로그아웃</Text>
+          <Text style={styles.alertMessage}>정말 로그아웃 하시겠습니까?</Text>
+          <View style={styles.alertButtons}>
+            <TouchableOpacity style={styles.alertButton} onPress={onClose}>
+              <Text style={styles.alertButtonText}>취소</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.alertButton, styles.confirmButton]} onPress={onConfirm}>
+              <Text style={[styles.alertButtonText, styles.confirmButtonText]}>확인</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
+    </Modal>
+  );
+};
 
+export default function HomeScreen({ navigation, route }: HomeScreenProps) {
+  const [isAlertVisible, setAlertVisible] = useState(false);
+  const scrollX = useAnimatedValue(0);
   const { width: windowWidth } = useWindowDimensions();
 
   useFocusEffect(
-    useCallback(() => {
+    React.useCallback(() => {
       const backHandler = BackHandler.addEventListener('hardwareBackPress', () => { return true; }) // 뒤로가기 무시
       return () => backHandler.remove();
     }, [])
   );
 
   const handleLogout = () => {
-    Alert.alert(
-      '로그아웃',
-      '정말 로그아웃 하시겠습니까?',
-      [
-        {
-          text: '취소',
-          onPress: () => { },
-          style: 'cancel'
-        },
-        {
-          text: '확인',
-          onPress: () => handleLogoutConfirm()
-        }
-      ]
-    )
+    setAlertVisible(true);
   }
 
   const handleLogoutConfirm = () => {
-    Alert.alert('로그아웃 되었습니다.')
+    setAlertVisible(false);
     navigation.goBack()
   }
 
@@ -133,22 +142,73 @@ export default function HomeScreen({ navigation, route }: HomeScreenProps) {
             title="Go to Profile"
             onPress={handleProfile} />
         </View>
+        <CustomAlert
+          visible={isAlertVisible}
+          onClose={() => setAlertVisible(false)}
+          onConfirm={handleLogoutConfirm}
+        />
       </Container>
     </SafeAreaProvider>
   )
 }
 
 const styles = StyleSheet.create({
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  alertContainer: {
+    width: '80%',
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 20,
+    alignItems: 'center',
+  },
+  alertTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  alertMessage: {
+    fontSize: 16,
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+  alertButtons: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+  },
+  alertButton: {
+    flex: 1,
+    padding: 10,
+    alignItems: 'center',
+    borderRadius: 5,
+    marginHorizontal: 5,
+    backgroundColor: '#ddd',
+  },
+  confirmButton: {
+    backgroundColor: '#007BFF',
+  },
+  alertButtonText: {
+    fontSize: 16,
+    color: 'black',
+  },
+  confirmButtonText: {
+    color: 'white',
+  },
   textContainer: {
-    backgroundColor: 'rgba(0,0,0, 0.7',
+    backgroundColor: 'rgba(0,0,0, 0.7)',
     paddingHorizontal: 24,
     paddingVertical: 8,
-    borderRadius: 8
+    borderRadius: 8,
   },
   scrollContainer: {
     height: 300,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   card: {
     flex: 1,
@@ -157,7 +217,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     overflow: 'hidden',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   container: {
     flex: 1,
@@ -168,7 +228,7 @@ const styles = StyleSheet.create({
   infoText: {
     color: 'white',
     fontSize: 16,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   normalDot: {
     height: 8,
@@ -181,5 +241,5 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-  }
-})
+  },
+});
