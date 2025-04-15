@@ -1,11 +1,26 @@
 import React, { useState } from 'react';
 import {
-  View, Button, Text, StyleSheet, BackHandler, ScrollView, ImageBackground, Animated, useWindowDimensions, useAnimatedValue, Platform, Modal, TouchableOpacity,
+  View,
+  Button,
+  Text,
+  StyleSheet,
+  BackHandler,
+  ScrollView,
+  ImageBackground,
+  Animated,
+  useWindowDimensions,
+  useAnimatedValue,
+  Platform,
+  Modal,
+  TouchableOpacity,
+  NativeModules
 } from 'react-native';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../App';
+
+const { MyNativeModule } = NativeModules;
 
 const images = new Array(6).fill(
   // 'https://images.unsplash.com/photo-1673678886475-3a2f8c5d0b1e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60'
@@ -64,6 +79,10 @@ export default function HomeScreen({ navigation, route }: HomeScreenProps) {
     navigation.navigate('Profile')
   }
 
+  const handleTest = () => {
+    MyNativeModule.showToast('hh');
+  }
+
   const { id } = route.params;
 
   React.useLayoutEffect(() => {
@@ -94,7 +113,7 @@ export default function HomeScreen({ navigation, route }: HomeScreenProps) {
                     contentOffset: { x: scrollX }
                   }
                 }
-              ])}
+              ], {useNativeDriver: false})}
             scrollEventThrottle={1}>
             {images.map((image, index) => {
               return (
@@ -141,6 +160,9 @@ export default function HomeScreen({ navigation, route }: HomeScreenProps) {
           <Button
             title="Go to Profile"
             onPress={handleProfile} />
+            <Button
+            title="test button"
+            onPress={handleTest} />
         </View>
         <CustomAlert
           visible={isAlertVisible}
