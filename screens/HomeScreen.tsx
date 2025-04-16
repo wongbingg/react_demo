@@ -20,13 +20,10 @@ import { useFocusEffect } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../App';
 
-const { MyNativeModule } = NativeModules;
-
-const images = new Array(6).fill(
-  // 'https://images.unsplash.com/photo-1673678886475-3a2f8c5d0b1e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60'
-  'https://images.unsplash.com/photo-1556740749-887f6717d7e4'
-);
 type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
+
+const { MyNativeModule } = NativeModules;
+const images = new Array(6).fill('https://images.unsplash.com/photo-1556740749-887f6717d7e4');
 
 const CustomAlert = ({ visible, onClose, onConfirm }: { visible: boolean, onClose: () => void, onConfirm: () => void }) => {
   return (
@@ -80,7 +77,7 @@ export default function HomeScreen({ navigation, route }: HomeScreenProps) {
   }
 
   const handleTest = () => {
-    MyNativeModule.showToast('hh');
+    MyNativeModule.showToast('Hello from React!!!');
   }
 
   const { id } = route.params;
@@ -113,7 +110,7 @@ export default function HomeScreen({ navigation, route }: HomeScreenProps) {
                     contentOffset: { x: scrollX }
                   }
                 }
-              ], {useNativeDriver: false})}
+              ], { useNativeDriver: false })}
             scrollEventThrottle={1}>
             {images.map((image, index) => {
               return (
@@ -150,17 +147,12 @@ export default function HomeScreen({ navigation, route }: HomeScreenProps) {
               );
             })}
           </View>
-
-          {/* <View style={styles.container}>
-            <Text>안녕하세요, {id} 님</Text>
-            <Button title="Profile" onPress={handleProfile} />
-          </View> */}
         </View>
         <View style={{ marginTop: 16 }}>
           <Button
             title="Go to Profile"
             onPress={handleProfile} />
-            <Button
+          <Button
             title="test button"
             onPress={handleTest} />
         </View>
