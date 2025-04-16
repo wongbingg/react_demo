@@ -19,6 +19,10 @@ import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../App';
+import { RootState, AppDispatch } from '../redux/store'
+import { incrementByAmount } from '../redux/counterSlice';
+import { increment } from '../redux/onePlusSlice'
+import { useDispatch, useSelector } from 'react-redux';
 
 type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
@@ -55,6 +59,10 @@ export default function HomeScreen({ navigation, route }: HomeScreenProps) {
   const [isAlertVisible, setAlertVisible] = useState(false);
   const scrollX = useAnimatedValue(0);
   const { width: windowWidth } = useWindowDimensions();
+
+  const count = useSelector((state: RootState) => state.counter.value)
+  const count2 = useSelector((state: RootState) => state.onePlus.value)
+  const dispatch = useDispatch<AppDispatch>()
 
   useFocusEffect(
     React.useCallback(() => {
@@ -148,12 +156,15 @@ export default function HomeScreen({ navigation, route }: HomeScreenProps) {
             })}
           </View>
         </View>
-        <View style={{ marginTop: 16 }}>
+        <View style={{ marginTop: 16, gap: 20 }}>
+          <Text>{count} | {count2}</Text>
+          <Button title="redux +5" onPress={() => dispatch(incrementByAmount(5))} />
+          <Button title="redux +1" onPress={() => dispatch(increment())} />
           <Button
             title="Go to Profile"
             onPress={handleProfile} />
           <Button
-            title="test button"
+            title="native moduletest button"
             onPress={handleTest} />
         </View>
         <CustomAlert
