@@ -23,6 +23,7 @@ import { RootState, AppDispatch } from '../redux/store'
 import { incrementByAmount } from '../redux/counterSlice';
 import { increment } from '../redux/onePlusSlice'
 import { useDispatch, useSelector } from 'react-redux';
+import BigButton from './components/BigButton';
 
 type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
@@ -160,7 +161,7 @@ export default function HomeScreen({ navigation, route }: HomeScreenProps) {
           <Text>{count} | {count2}</Text>
           <Button title="redux +5" onPress={() => dispatch(incrementByAmount(5))} />
           <Button title="redux +1" onPress={() => dispatch(increment())} />
-          <Button
+          <BigButton
             title="Go to Profile"
             onPress={handleProfile} />
           <Button
