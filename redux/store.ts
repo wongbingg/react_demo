@@ -5,7 +5,7 @@ import onePlusReducer from './onePlusSlice'
 export const store = configureStore({
     reducer: {
         counter: counterReducer,
-        onePlus: onePlusReducer
+        onePlus: onePlusReducer,
     },
 })
 

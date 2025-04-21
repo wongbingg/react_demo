@@ -9,24 +9,25 @@ interface BigButtonProps {
 const BigButton: React.FC<BigButtonProps> = ({ title, onPress }) => {
   return (
     <TouchableOpacity style={styles.button} onPress={onPress}>
-      <Text style={styles.buttonText}>{title}</Text>
+      <Text style={styles.buttonText}>+</Text>
     </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: '#620000',
-    paddingVertical: 16,
-    paddingHorizontal: 32,
-    borderRadius: 4,
+    backgroundColor: 'skyblue',
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    justifyContent: 'center',
     alignItems: 'center',
     // elevation: 4, // Android 전용 그림자 효과
     marginVertical: 10,
   },
   buttonText: {
     color: 'white',
-    fontSize: 18,
+    fontSize: 40,
     fontWeight: 'bold',
   },
 });

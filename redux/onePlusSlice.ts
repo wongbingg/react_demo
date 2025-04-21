@@ -15,6 +15,9 @@ export const onePlusSlice = createSlice({
         increment: state => {
             state.value += 1
         },
+        helloworld: state => {
+            state.value += 100
+        }
     },
 })
 
