@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, memo } from 'react';
 import {
   View,
   Button,
@@ -13,75 +13,29 @@ import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../App';
-import { RootState, AppDispatch } from '../redux/store'
-import { incrementByAmount } from '../redux/counterSlice';
-import { increment } from '../redux/onePlusSlice'
-import { useDispatch, useSelector } from 'react-redux';
 import CustomAlert from './components/CustomAlert';
 import HomeScreenStyles from './styles/HomeScreenStyles';
 import { save } from '../storage';
-// import SQLite from 'react-native-sqlite-storage';
+import { createSqlTable, fetchMemos } from '../persistance/SQLiteStorage';
+import { MemoCell } from './components/MemoCell';
 
 type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
 const { MyNativeModule } = NativeModules;
 
-type ItemProps = { title: string };
-
-const Item = ({ title }: ItemProps) => (
-  <View style={HomeScreenStyles.stretchedItem}>
-    <Text>{title}</Text>
-  </View>
-);
-
 export default function HomeScreen({ navigation, route }: HomeScreenProps) {
-  // todo; source 데이터 선언
-  // const [memos, setMemos] = useState<{ id: string; text: string }[]>([]);
+  const [memos, setMemos] = useState<{ id: string; text: string }[]>([]);
   const [isAlertVisible, setAlertVisible] = useState(false);
 
-  // todo; SQLite 데이터베이스 연결
-  // const db = SQLite.openDatabase(
-  //   {
-  //     name: 'TestDB.db',
-  //     location: 'default',
-  //     createFromLocation: '~www/TestDB.db',
-  //   },
-  //   () => {
-  //     console.log('Database connected successfully');
-  //   },
-  //   (error) => {
-  //     console.error('Error connecting to database:', error);
-  //   }
-  // )
-  // todo; 데이터 가져오기 함수
-  // const fetchMemos = () => {
-  //   db.transaction((tx) => {
-  //     tx.executeSql(
-  //       'SELECT id, text FROM test',
-  //       [],
-  //       (tx, results) => {
-  //         const rows = results.rows;
-  //         const fetchedMemos = [];
-  //         for (let i = 0; i < rows.length; i++) {
-  //           fetchedMemos.push(rows.item(i));
-  //         }
-  //         setMemos(fetchedMemos);
-  //       },
-  //       (error) => {
-  //         console.error('Error fetching memos:', error);
-  //       }
-  //     );
-  //   });
-  // };
+  useEffect(() => {
+    createSqlTable();
+  })
 
-  // todo; 컴포넌트가 마운트될 때 데이터 가져오기
-  // useEffect(() => {
-  //   fetchMemos();
-  // }, []);
-
-  const count = useSelector((state: RootState) => state.counter.value)
-  const count2 = useSelector((state: RootState) => state.onePlus.value)
-  const dispatch = useDispatch<AppDispatch>()
+  useFocusEffect(
+    useCallback(() => {
+      fetchMemos().then((res) => setMemos(res || []))
+    }, [])
+  )
 
   useFocusEffect(
     React.useCallback(() => {
@@ -99,13 +53,6 @@ export default function HomeScreen({ navigation, route }: HomeScreenProps) {
       ),
     });
   }, [navigation]);
-
-  const memos = [
-    { id: '1', text: '첫 번째 메모' },
-    { id: '2', text: '두 번째 메모' },
-    { id: '3', text: '세 번째 메모1212113' },
-    // 필요한 만큼 추가
-  ];
 
   const handleLogout = () => {
     setAlertVisible(true);
@@ -134,9 +81,15 @@ export default function HomeScreen({ navigation, route }: HomeScreenProps) {
         <FlatList
           data={memos}
           renderItem={
-            ({ item }) => <Item title={item.text} />
+            ({ item }) => 
+              <TouchableOpacity
+                onPress={() => navigation.navigate('Memo', { id: item.id })}
+              >
+                <MemoCell title={item.text} />
+              </TouchableOpacity>
           }
-          keyExtractor={item => item.id} />
+          keyExtractor={item => item.id}
+        />
 
         {/* 새로운 메모 생성 버튼 */}
         <TouchableOpacity style={HomeScreenStyles.floatingButton} onPress={goToWrite}>

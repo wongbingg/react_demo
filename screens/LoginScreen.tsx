@@ -54,7 +54,7 @@ export default function LoginScreen({ navigation }: LoginScreenProp) {
     <View style={styles.container}>
       {/* 로고 */}
       <Image
-        source={require('../assets/logo2.png')} // 로고 이미지 경로
+        source={require('../assets/logo.png')} // 로고 이미지 경로
         style={styles.logo}
       />
       {/* 입력 필드 */}

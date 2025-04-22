@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
-import { View, Text, Button, StyleSheet, TextInput } from 'react-native'
+import { View, Text, Button, StyleSheet, TextInput, Alert } from 'react-native'
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { RootStackParamList } from '../App'
 import { writeSlice } from '../redux/writeSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../redux/store'
+import { saveTable } from '../persistance/SQLiteStorage'
+
 
 type WriteScreenProp = NativeStackScreenProps<RootStackParamList, 'Write'>
 
@@ -18,7 +20,24 @@ export default function WriteScreen({ navigation }: WriteScreenProp) {
   }
 
   const handleSave = () => {
-    // TODO: 로컬 DB 에 저장 
+    Alert.alert(
+      '확인',
+      '저장하시겠습니까?',
+      [
+        {
+          text: '취소',
+          style: 'cancel',
+        },
+        {
+          text: '확인',
+          onPress: () => {
+            saveTable('test', { text: textValue })
+            navigation.goBack()
+          },
+        },
+      ],
+      { cancelable: true }
+    )
   }
 
   useFocusEffect(
