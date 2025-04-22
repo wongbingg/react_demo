@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Button,
@@ -20,26 +20,69 @@ import { useDispatch, useSelector } from 'react-redux';
 import CustomAlert from './components/CustomAlert';
 import HomeScreenStyles from './styles/HomeScreenStyles';
 import { save } from '../storage';
+// import SQLite from 'react-native-sqlite-storage';
 
 type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
 const { MyNativeModule } = NativeModules;
 
-type ItemProps = {title: string};
+type ItemProps = { title: string };
 
-const Item = ({title}: ItemProps) => (
+const Item = ({ title }: ItemProps) => (
   <View style={HomeScreenStyles.stretchedItem}>
     <Text>{title}</Text>
   </View>
 );
 
 export default function HomeScreen({ navigation, route }: HomeScreenProps) {
+  // todo; source 데이터 선언
+  // const [memos, setMemos] = useState<{ id: string; text: string }[]>([]);
   const [isAlertVisible, setAlertVisible] = useState(false);
+
+  // todo; SQLite 데이터베이스 연결
+  // const db = SQLite.openDatabase(
+  //   {
+  //     name: 'TestDB.db',
+  //     location: 'default',
+  //     createFromLocation: '~www/TestDB.db',
+  //   },
+  //   () => {
+  //     console.log('Database connected successfully');
+  //   },
+  //   (error) => {
+  //     console.error('Error connecting to database:', error);
+  //   }
+  // )
+  // todo; 데이터 가져오기 함수
+  // const fetchMemos = () => {
+  //   db.transaction((tx) => {
+  //     tx.executeSql(
+  //       'SELECT id, text FROM test',
+  //       [],
+  //       (tx, results) => {
+  //         const rows = results.rows;
+  //         const fetchedMemos = [];
+  //         for (let i = 0; i < rows.length; i++) {
+  //           fetchedMemos.push(rows.item(i));
+  //         }
+  //         setMemos(fetchedMemos);
+  //       },
+  //       (error) => {
+  //         console.error('Error fetching memos:', error);
+  //       }
+  //     );
+  //   });
+  // };
+
+  // todo; 컴포넌트가 마운트될 때 데이터 가져오기
+  // useEffect(() => {
+  //   fetchMemos();
+  // }, []);
 
   const count = useSelector((state: RootState) => state.counter.value)
   const count2 = useSelector((state: RootState) => state.onePlus.value)
   const dispatch = useDispatch<AppDispatch>()
- 
+
   useFocusEffect(
     React.useCallback(() => {
       const backHandler = BackHandler.addEventListener('hardwareBackPress', () => { return true; }) // 뒤로가기 무시
@@ -104,7 +147,7 @@ export default function HomeScreen({ navigation, route }: HomeScreenProps) {
         <CustomAlert
           visible={isAlertVisible}
           onClose={() => setAlertVisible(false)}
-          onConfirm={handleLogoutConfirm}/>
+          onConfirm={handleLogoutConfirm} />
       </Container>
     </SafeAreaProvider>
   )
