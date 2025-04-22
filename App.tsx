@@ -17,6 +17,7 @@ import WriteScreen from './screens/WriteScreen';
 import { load } from './persistance/asyncStorage';
 import { MemoCell } from './screens/components/MemoCell';
 import MemoScreen from './screens/MemoScreen';
+import ExampleScreen from './screens/ExampleScreen';
 
 export type RootStackParamList = {
   Login: undefined;
@@ -24,6 +25,7 @@ export type RootStackParamList = {
   Profile: undefined;
   Write: undefined;
   Memo: { id: string };
+  Example: undefined;
 }
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
@@ -66,6 +68,10 @@ export default function App() {
           <Stack.Screen
             name="Memo"
             component={MemoScreen}
+          />
+          <Stack.Screen
+            name="Example"
+            component={ExampleScreen}
           />
         </Stack.Navigator>
       </NavigationContainer>
