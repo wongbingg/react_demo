@@ -14,7 +14,7 @@ import LoginScreen from './screens/LoginScreen'
 import HomeScreen from './screens/HomeScreen'
 import ProfileScreen from './screens/ProfileScreen'
 import WriteScreen from './screens/WriteScreen';
-import { load } from './storage';
+import { load } from './persistance/asyncStorage';
 import { MemoCell } from './screens/components/MemoCell';
 import MemoScreen from './screens/MemoScreen';
 

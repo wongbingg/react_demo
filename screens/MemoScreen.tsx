@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { View, Text, Button, StyleSheet } from 'react-native'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { RootStackParamList } from '../App'
-import { fetchMemoById } from '../persistance/SQLiteStorage'
+import { fetchMemoById } from '../persistance/sqliteStorage'
 
 type MemoScreenProp = NativeStackScreenProps<RootStackParamList, 'Memo'>
 

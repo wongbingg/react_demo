@@ -15,8 +15,8 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../App';
 import CustomAlert from './components/CustomAlert';
 import HomeScreenStyles from './styles/HomeScreenStyles';
-import { save } from '../storage';
-import { createSqlTable, fetchMemos } from '../persistance/SQLiteStorage';
+import { save } from '../persistance/asyncStorage';
+import { createSqlTable, fetchMemos } from '../persistance/sqliteStorage';
 import { MemoCell } from './components/MemoCell';
 
 type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Home'>;

@@ -6,7 +6,7 @@ import { RootStackParamList } from '../App'
 import { writeSlice } from '../redux/writeSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../redux/store'
-import { saveTable } from '../persistance/SQLiteStorage'
+import { saveTable } from '../persistance/sqliteStorage'
 
 
 type WriteScreenProp = NativeStackScreenProps<RootStackParamList, 'Write'>
