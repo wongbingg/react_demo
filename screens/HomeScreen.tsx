@@ -65,8 +65,8 @@ export default function HomeScreen({ navigation, route }: HomeScreenProps) {
   }
 
   const goToWrite = () => {
-    // navigation.navigate('Write')
-    navigation.navigate('Example')
+    navigation.navigate('Write')
+    // navigation.navigate('Example') // swipable 예시
   }
 
   const handleTest = () => { // why; Native Module Test
