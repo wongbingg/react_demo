@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { View, Text, Button, StyleSheet, TextInput, Alert, Platform } from 'react-native'
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
@@ -9,6 +9,7 @@ import { RootState } from '../redux/store'
 import { saveTable } from '../persistance/sqliteStorage'
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import CustomAlert from './components/CustomAlert'
 
 
 type WriteScreenProp = NativeStackScreenProps<RootStackParamList, 'Write'>
@@ -56,8 +57,9 @@ export default function WriteScreen({ navigation }: WriteScreenProp) {
         style={{ flex: 1, paddingTop: Platform.OS === 'android' ? 25 : 0, }}
       >
         <KeyboardAwareScrollView
-          contentContainerStyle={{flex: 1}}
+          contentContainerStyle={{ flex: 1 }}
           extraScrollHeight={20}
+          enableOnAndroid={true}
         >
           <View style={styles.container}>
             <TextInput

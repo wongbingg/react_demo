@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
 import writeReducer from './writeSlice'
+import homeReducer from './homeSlice'
 
 export const store = configureStore({
     reducer: {
-        write: writeReducer
+        write: writeReducer,
+        home: homeReducer
     },
 })
 
