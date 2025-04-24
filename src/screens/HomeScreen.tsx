@@ -16,7 +16,7 @@ import {
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../App';
+import { RootStackParamList } from '../App.tsx';
 import CustomAlert from './components/CustomAlert';
 import HomeScreenStyles from './styles/HomeScreenStyles';
 import { save } from '../persistance/asyncStorage';

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { View, Text, Button, StyleSheet, Platform } from 'react-native'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import { RootStackParamList } from '../App'
+import { RootStackParamList } from '../App.tsx'
 import { fetchMemoById } from '../persistance/sqliteStorage'
 import CustomNavigationBar from './components/CustomNavigationBar'
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
