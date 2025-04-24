@@ -73,7 +73,6 @@ export const fetchMemos = async () => {
       fetchedMemos.push(rows.item(i));
     }
     return fetchedMemos;
-    // setMemos(fetchedMemos);
   } catch (error) {
     console.log('Error fetching memos:', error);
   }

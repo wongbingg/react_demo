@@ -33,6 +33,7 @@ import Reanimated, {
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
 import { homeSlice } from '../redux/homeSlice';
+import CustomNavigationBar from './components/CustomNavigationBar';
 
 type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
@@ -132,28 +133,36 @@ export default function HomeScreen({ navigation, route }: HomeScreenProps) {
   return (
     <SafeAreaProvider>
       <Container style={HomeScreenStyles.container}>
+        <CustomNavigationBar
+          title={'Home'}
+          isBack={false}
+          rightButton={{
+            text: '로그아웃',
+            handler: handleLogout
+          }}
+        />
         {/* 메인 리스트 */}
-        {/* <GestureHandlerRootView> */}
+        <GestureHandlerRootView>
           <FlatList
             data={memosValue}
             renderItem={
               ({ item }) =>
-                // <ReanimatedSwipeable
-                //   containerStyle={styles.swipeable}
-                //   friction={4}
-                //   enableTrackpadTwoFingerGesture
-                //   rightThreshold={50}
-                //   renderRightActions={(prog, drag) => RightAction(prog, drag, item.id)}>
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('Memo', { id: item.id })}
-                >
-                  <MemoCell title={item.text} />
-                </TouchableOpacity>
-              // </ReanimatedSwipeable>
+                <ReanimatedSwipeable
+                  containerStyle={styles.swipeable}
+                  friction={4}
+                  enableTrackpadTwoFingerGesture
+                  rightThreshold={50}
+                  renderRightActions={(prog, drag) => RightAction(prog, drag, item.id)}>
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('Memo', { id: item.id })}
+                  >
+                    <MemoCell title={item.text} />
+                  </TouchableOpacity>
+                </ReanimatedSwipeable>
             }
             keyExtractor={item => item.id}
           />
-        {/* </GestureHandlerRootView> */}
+        </GestureHandlerRootView>
 
         {/* 새로운 메모 생성 버튼 */}
         <TouchableOpacity style={HomeScreenStyles.floatingButton} onPress={goToWrite}>

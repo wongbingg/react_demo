@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, Button, StyleSheet } from 'react-native'
+import { View, Text, Button, StyleSheet, Platform } from 'react-native'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { RootStackParamList } from '../App'
 import { fetchMemoById } from '../persistance/sqliteStorage'
+import CustomNavigationBar from './components/CustomNavigationBar'
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
 
 type MemoScreenProp = NativeStackScreenProps<RootStackParamList, 'Memo'>
 
@@ -19,14 +21,34 @@ export default function MemoScreen({ navigation, route }: MemoScreenProp) {
     fetchMemo();
   }, [id]);
 
+  const Container = Platform.OS === 'ios' ? SafeAreaView : View;
+
   return (
-    <View style={styles.container}>
-      <Text>메모 정보</Text>
-      <Text>{memo || '로딩 중...'}</Text>
-    </View>
+    <SafeAreaProvider>
+      <Container style={styles.container}>
+        <CustomNavigationBar
+          title={'Memo'}
+          isBack={true}
+          
+        />
+        <View style={styles.contents}>
+          <Text>메모 정보</Text>
+          <Text>{memo || '로딩 중...'}</Text>
+        </View>
+      </Container>
+    </SafeAreaProvider>
   )
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  container: {
+    flex: 1,
+    // paddingTop: Platform.OS === 'android' ? 25 : 0,
+
+  },
+  contents: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  }
 })

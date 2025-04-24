@@ -57,7 +57,7 @@ const HomeScreenStyles = StyleSheet.create({
       flex: 1,
       // justifyContent: 'center',
       // alignItems: 'center',
-      paddingTop: Platform.OS === 'android' ? 25 : 0,
+      // paddingTop: Platform.OS === 'android' ? 25 : 0,
     },
     memoList: {
       padding: 16,
