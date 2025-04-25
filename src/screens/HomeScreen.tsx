@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useCallback, memo, StrictMode } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   View,
-  Button,
   Text,
   BackHandler,
   Platform,
@@ -10,8 +9,6 @@ import {
   FlatList,
   StyleSheet,
   Pressable,
-  UIManager,
-  LayoutAnimation
 } from 'react-native';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
@@ -57,7 +54,7 @@ export default function HomeScreen({ navigation, route }: HomeScreenProps) {
 
   useEffect(() => {
     createSqlTable();
-  })
+  }, [])
 
   useFocusEffect(
     useCallback(() => {
