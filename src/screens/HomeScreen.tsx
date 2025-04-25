@@ -73,16 +73,6 @@ export default function HomeScreen({ navigation, route }: HomeScreenProps) {
       return () => backHandler.remove();
     }, [])
   );
-  React.useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <Button
-          onPress={handleLogout}
-          title="Logout"
-        />
-      ),
-    });
-  }, [navigation]);
 
   const handleLogout = () => {
     setAlertVisible(true);
@@ -96,7 +86,6 @@ export default function HomeScreen({ navigation, route }: HomeScreenProps) {
 
   const goToWrite = () => {
     navigation.navigate('Write')
-    // navigation.navigate('Example') // swipable 예시
   }
 
   const handleTest = () => { // why; Native Module Test
@@ -133,6 +122,8 @@ export default function HomeScreen({ navigation, route }: HomeScreenProps) {
   return (
     <SafeAreaProvider>
       <Container style={HomeScreenStyles.container}>
+
+        {/* 네비게이션바 */}
         <CustomNavigationBar
           title={'Home'}
           isBack={false}
@@ -141,6 +132,7 @@ export default function HomeScreen({ navigation, route }: HomeScreenProps) {
             handler: handleLogout
           }}
         />
+
         {/* 메인 리스트 */}
         <GestureHandlerRootView>
           <FlatList

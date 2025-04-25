@@ -5,7 +5,7 @@
 //  * @format
 //  */
 
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
 import { NavigationContainer } from '@react-navigation/native'
@@ -14,10 +14,7 @@ import LoginScreen from './screens/LoginScreen'
 import HomeScreen from './screens/HomeScreen'
 import ProfileScreen from './screens/ProfileScreen'
 import WriteScreen from './screens/WriteScreen';
-import { load } from './persistance/asyncStorage';
-import { MemoCell } from './screens/components/MemoCell';
 import MemoScreen from './screens/MemoScreen';
-import ExampleScreen from './screens/ExampleScreen';
 
 export type RootStackParamList = {
   Login: undefined;
@@ -68,10 +65,6 @@ export default function App() {
           <Stack.Screen
             name="Memo"
             component={MemoScreen}
-          />
-          <Stack.Screen
-            name="Example"
-            component={ExampleScreen}
           />
         </Stack.Navigator>
       </NavigationContainer>

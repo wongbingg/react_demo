@@ -53,11 +53,13 @@ export default function LoginScreen({ navigation }: LoginScreenProp) {
 
   return (
     <View style={LoginScreenStyles.container}>
+
       {/* 로고 */}
       <Image
         source={require('../assets/logo.png')} // 로고 이미지 경로
         style={LoginScreenStyles.logo}
       />
+
       {/* 입력 필드 */}
       <TextInput
         placeholder="Email address"
@@ -74,10 +76,15 @@ export default function LoginScreen({ navigation }: LoginScreenProp) {
         secureTextEntry
         style={LoginScreenStyles.input}
       />
+
       {/* 로그인 버튼 */}
-      <TouchableOpacity style={LoginScreenStyles.loginButton} onPress={handleLogin}>
+      <TouchableOpacity
+        style={LoginScreenStyles.loginButton}
+        onPress={handleLogin}
+      >
         <Text style={LoginScreenStyles.loginButtonText}>Log in</Text>
       </TouchableOpacity>
+
       {/* 하단 링크 */}
       <View style={LoginScreenStyles.footer}>
         <TouchableOpacity>
@@ -87,6 +94,7 @@ export default function LoginScreen({ navigation }: LoginScreenProp) {
           <Text style={LoginScreenStyles.footerText}>Forgot password?</Text>
         </TouchableOpacity>
       </View>
+
     </View>
   );
 }

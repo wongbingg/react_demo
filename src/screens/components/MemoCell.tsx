@@ -10,7 +10,7 @@ export const MemoCell = ({ title }: MemoCellProps) => (
 
 const MemoCellStyles = StyleSheet.create({
     stretchedItem: {
-      backgroundColor: '#f9c2ff',
+      backgroundColor: 'lightgray',
       padding: 20,
       marginVertical: 8,
       marginHorizontal: 16,
