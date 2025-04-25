@@ -19,12 +19,10 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../App.tsx';
 import CustomAlert from './components/CustomAlert';
 import HomeScreenStyles from './styles/HomeScreenStyles';
-import { save } from '../persistance/asyncStorage';
+import { MyAsyncStorage } from '../persistance/asyncStorage';
 import { createSqlTable, deleteMemoById, fetchMemos } from '../persistance/sqliteStorage';
 import { MemoCell } from './components/MemoCell';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-
-
 import ReanimatedSwipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
 import Reanimated, {
   SharedValue,
@@ -80,7 +78,7 @@ export default function HomeScreen({ navigation, route }: HomeScreenProps) {
 
   const handleLogoutConfirm = () => {
     setAlertVisible(false);
-    save('IS_LOGIN', 'N')
+    MyAsyncStorage.save('IS_LOGIN', 'N')
     navigation.goBack()
   }
 

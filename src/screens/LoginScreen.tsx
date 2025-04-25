@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { View, TextInput, Button, Text, Image, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../App';
-import { load, save } from '../persistance/asyncStorage';
+import { RootStackParamList } from '../App.tsx';
+import { MyAsyncStorage } from '../persistance/asyncStorage';
 import { withDelay } from 'react-native-reanimated';
 import { LoginScreenStyles } from './styles/LoginScreenStyles';
 
@@ -18,14 +18,14 @@ export default function LoginScreen({ navigation }: LoginScreenProp) {
   const handleLogin = () => {
     if (id && pw) {
       navigation.navigate('Home');
-      save('IS_LOGIN', "Y")
+      MyAsyncStorage.save('IS_LOGIN', "Y")
     }
   };
 
   useEffect(() => {
     const checkLoginStatus = async () => {
       try {
-        const isLogin = await load('IS_LOGIN') // 비동기 호출
+        const isLogin = await MyAsyncStorage.load('IS_LOGIN') // 비동기 호출
         if (isLogin === "Y") {
           await delay(800);
           navigation.navigate('Home');
