@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { deleteMemoById, fetchMemoById, fetchMemos } from '../persistance/sqliteStorage'
+import { Memo } from '../types/memo'
 
 interface HomeState {
-    memos: { id: string, text: string }[]
+    memos: Memo[]
 }
 
 const initialState: HomeState = {

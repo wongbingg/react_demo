@@ -37,7 +37,7 @@ const { MyNativeModule } = NativeModules;
 export default function HomeScreen({ navigation, route }: HomeScreenProps) {
   const dispatch = useDispatch()
   const memosValue = useSelector((state: RootState) => state.home.memos) // why; 바인딩이 된건가 ?
-  const handleMemosChange = (value: { id: string, text: string }[]) => {
+  const handleMemosChange = (value: Memo[]) => {
     dispatch(homeSlice.actions.setMemos(value))
   }
 

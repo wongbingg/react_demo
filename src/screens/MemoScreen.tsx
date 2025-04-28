@@ -5,12 +5,13 @@ import { RootStackParamList } from '../App.tsx'
 import { fetchMemoById } from '../persistance/sqliteStorage'
 import CustomNavigationBar from './components/CustomNavigationBar'
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
+import { Memo } from '../types/memo.ts'
 
 type MemoScreenProp = NativeStackScreenProps<RootStackParamList, 'Memo'>
 
 export default function MemoScreen({ navigation, route }: MemoScreenProp) {
   const { id } = route.params;
-  const [memo, setMemo] = useState<string | null>(null);
+  const [memo, setMemo] = useState<Memo | null>(null);
 
   useEffect(() => {
     const fetchMemo = async () => {
