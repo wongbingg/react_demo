@@ -1,22 +1,32 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 interface WriteState {
-    value: string
+    titleValue: string,
+    bodyValue: string,
+    refValue: string
 }
 
 const initialState: WriteState = {
-    value: '',
+    titleValue: '',
+    bodyValue: '',
+    refValue: ''
 }
 
 export const writeSlice = createSlice({
     name: 'write',
     initialState,
     reducers: {
-        inputText: (state, action: PayloadAction<string>) => {
-            state.value = action.payload;
-        }
+        setTitleValue: (state, action: PayloadAction<string>) => {
+            state.titleValue = action.payload;
+        },
+        setBodyValue: (state, action: PayloadAction<string>) => {
+            state.bodyValue = action.payload;
+        },
+        setRefValue: (state, action: PayloadAction<string>) => {
+            state.refValue = action.payload;
+        },
     }
 })
 
-export const { inputText } = writeSlice.actions
+export const { setTitleValue, setBodyValue, setRefValue } = writeSlice.actions
 export default writeSlice.reducer

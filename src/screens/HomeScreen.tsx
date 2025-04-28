@@ -17,7 +17,6 @@ import { RootStackParamList } from '../App.tsx';
 import CustomAlert from './components/CustomAlert';
 import HomeScreenStyles from './styles/HomeScreenStyles';
 import { MyAsyncStorage } from '../persistance/asyncStorage';
-import { createSqlTable, deleteMemoById, fetchMemos } from '../persistance/sqliteStorage';
 import { MemoCell } from './components/MemoCell';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import ReanimatedSwipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
@@ -29,6 +28,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
 import { homeSlice } from '../redux/homeSlice';
 import CustomNavigationBar from './components/CustomNavigationBar';
+import { Memo } from '../types/memo.ts';
+import { MemoStorage } from '../persistance/memoStorage.ts';
 
 type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
@@ -43,7 +44,7 @@ export default function HomeScreen({ navigation, route }: HomeScreenProps) {
 
   const fetchData = async () => { // todo; 바인딩 됨. 이것을 바인딩 목록으로 쭉 나열하면 될듯
     try {
-      const memos = await fetchMemos();
+      const memos = await MemoStorage.readMemos();
       handleMemosChange(memos || []);
     } catch (error) {
       console.error('Failed to fetch memos:', error);
@@ -53,7 +54,7 @@ export default function HomeScreen({ navigation, route }: HomeScreenProps) {
   const [isAlertVisible, setAlertVisible] = useState(false);
 
   useEffect(() => {
-    createSqlTable();
+    MemoStorage.createMemosTable();
   }, [])
 
   useFocusEffect(
@@ -101,7 +102,7 @@ export default function HomeScreen({ navigation, route }: HomeScreenProps) {
       <Reanimated.View style={styleAnimation}>
         <Pressable
           onPress={async () => {
-            await deleteMemoById(id);
+            await MemoStorage.deleteMemoById(id);
             await fetchData();
           }
           }
@@ -143,7 +144,7 @@ export default function HomeScreen({ navigation, route }: HomeScreenProps) {
                   <TouchableOpacity
                     onPress={() => navigation.navigate('Memo', { id: item.id })}
                   >
-                    <MemoCell title={item.text} />
+                    <MemoCell title={item.title} />
                   </TouchableOpacity>
                 </ReanimatedSwipeable>
             }
