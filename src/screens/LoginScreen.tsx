@@ -5,22 +5,22 @@ import { RootStackParamList } from '../App.tsx';
 import { MyAsyncStorage } from '../persistance/asyncStorage';
 import { withDelay } from 'react-native-reanimated';
 import { LoginScreenStyles } from './styles/LoginScreenStyles';
+import { AuthRepository } from '../network/authRepository.ts';
 
 
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 type LoginScreenProp = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
 export default function LoginScreen({ navigation }: LoginScreenProp) {
-  const [id, setId] = useState('');
-  const [pw, setPw] = useState('');
   const [isLoading, setIsLoading] = useState(true);
 
-  const handleLogin = () => {
-    if (id && pw) {
-      navigation.navigate('Home');
-      MyAsyncStorage.save('IS_LOGIN', "Y")
-    }
-  };
+  const handleSignUp = () => {
+    navigation.navigate('SignUp')
+  }
+
+  const handlePhoneLogin = () => {
+    navigation.navigate('Login_Phone')
+  }
 
   useEffect(() => {
     const checkLoginStatus = async () => {
@@ -60,34 +60,19 @@ export default function LoginScreen({ navigation }: LoginScreenProp) {
         style={LoginScreenStyles.logo}
       />
 
-      {/* 입력 필드 */}
-      <TextInput
-        placeholder="Email address"
-        placeholderTextColor="#A9A9A9"
-        value={id}
-        onChangeText={setId}
-        style={LoginScreenStyles.input}
-      />
-      <TextInput
-        placeholder="Password"
-        placeholderTextColor="#A9A9A9"
-        value={pw}
-        onChangeText={setPw}
-        secureTextEntry
-        style={LoginScreenStyles.input}
-      />
-
-      {/* 로그인 버튼 */}
+      {/* 전화번호로 로그인 버튼 */}
       <TouchableOpacity
         style={LoginScreenStyles.loginButton}
-        onPress={handleLogin}
+        onPress={handlePhoneLogin}
       >
-        <Text style={LoginScreenStyles.loginButtonText}>Log in</Text>
+        <Text style={LoginScreenStyles.loginButtonText}>전화번호로 로그인하기</Text>
       </TouchableOpacity>
 
       {/* 하단 링크 */}
       <View style={LoginScreenStyles.footer}>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={handleSignUp}
+        >
           <Text style={LoginScreenStyles.footerText}>Sign up</Text>
         </TouchableOpacity>
         <TouchableOpacity>
