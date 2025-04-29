@@ -30,6 +30,7 @@ import { homeSlice } from '../redux/homeSlice';
 import CustomNavigationBar from './components/CustomNavigationBar';
 import { Memo } from '../types/memo.ts';
 import { MemoStorage } from '../persistance/memoStorage.ts';
+import { AuthRepository } from '../network/authRepository.ts';
 
 type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
@@ -74,10 +75,17 @@ export default function HomeScreen({ navigation, route }: HomeScreenProps) {
     setAlertVisible(true);
   }
 
-  const handleLogoutConfirm = () => {
+  const handleLogoutConfirm = async () => {
     setAlertVisible(false);
-    MyAsyncStorage.save('IS_LOGIN', 'N')
-    navigation.goBack()
+    const id = await MyAsyncStorage.load('USER_ID')
+    const res = await AuthRepository.logout({ 'userId': id })
+    if (res.code === 0) {
+      MyAsyncStorage.save('IS_LOGIN', 'N')
+      navigation.goBack()
+    } else {
+      console.error('로그아웃 실패')
+    }
+
   }
 
   const goToWrite = () => {
@@ -140,15 +148,15 @@ export default function HomeScreen({ navigation, route }: HomeScreenProps) {
                   friction={4}
                   enableTrackpadTwoFingerGesture
                   rightThreshold={50}
-                  renderRightActions={(prog, drag) => RightAction(prog, drag, item.id)}>
+                  renderRightActions={(prog, drag) => RightAction(prog, drag, item.id || '0')}>
                   <TouchableOpacity
-                    onPress={() => navigation.navigate('Memo', { id: item.id })}
+                    onPress={() => navigation.navigate('Memo', { id: item.id || '0' })}
                   >
                     <MemoCell title={item.title} />
                   </TouchableOpacity>
                 </ReanimatedSwipeable>
             }
-            keyExtractor={item => item.id}
+            keyExtractor={item => item.id || '0'}
           />
         </GestureHandlerRootView>
 
@@ -162,7 +170,10 @@ export default function HomeScreen({ navigation, route }: HomeScreenProps) {
           <CustomAlert
             visible={isAlertVisible}
             onClose={() => setAlertVisible(false)}
-            onConfirm={handleLogoutConfirm}
+            onConfirm={async () => {
+              await handleLogoutConfirm()
+            }
+            }
           />
         </View>
       </Container>
