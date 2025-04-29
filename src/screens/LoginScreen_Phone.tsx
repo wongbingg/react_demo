@@ -33,6 +33,18 @@ export default function LoginScreen_Phone({ navigation }: LoginScreen_PhoneProp)
         AuthRepository.sendCode({ phoneNo: inputNumber })
     }
 
+    const formatPhoneNumber = (phone: string) => {
+        const cleaned = phone.replace(/[^0-9]/g, '');
+
+        if (cleaned.length <= 3) {
+            return cleaned;
+        } else if (cleaned.length <= 7) {
+            return `${cleaned.slice(0,3)}-${cleaned.slice(3)}`;
+        } else {
+            return `${cleaned.slice(0, 3)}-${cleaned.slice(3, 7)}-${cleaned.slice(7, 11)}`;
+        }
+    }
+
     return (
         <View style={styles.container}>
             {/* 네비게이션바 */}
@@ -56,7 +68,8 @@ export default function LoginScreen_Phone({ navigation }: LoginScreen_PhoneProp)
                     placeholder='전화번호 입력'
                     style={styles.textInput}
                     keyboardType='numeric'
-                    onChangeText={setInputNumber}
+                    onChangeText={(text) => setInputNumber(formatPhoneNumber(text))}
+                    value={inputNumber}
                 />
                 <Button
                     title="보내기"
