@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
-import { View, Text, Button, StyleSheet, TextInput } from 'react-native'
+import { View, Text, Button, StyleSheet, TextInput, Platform } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { RootStackParamList } from '../App'
 import CustomNavigationBar from './components/CustomNavigationBar'
 import { AuthRepository } from '../network/authRepository'
 import { MyAsyncStorage } from '../persistance/asyncStorage'
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
 
 type LoginScreen_PhoneProp = NativeStackScreenProps<RootStackParamList, 'Login_Phone'>
 
@@ -16,10 +17,10 @@ export default function LoginScreen_Phone({ navigation }: LoginScreen_PhoneProp)
 
     const handleNextButton = async () => {
         try {
-            const res = await AuthRepository.login({phoneNo: inputNumber, password: inputPassword, token: 'empty'})
+            const res = await AuthRepository.login({ phoneNo: inputNumber, password: inputPassword, token: 'empty' })
             if (res.code === 0) {
                 console.log('로그인 성공')
-                MyAsyncStorage.save('IS_LOGIN', 'Y')
+                MyAsyncStorage.save('IS_LOGIN', 'Y') // warn: 뒤로가기 후 바로 로그인 화면전환이 적용되지 않음.
                 navigation.goBack();
             } else {
                 console.error('로그인 실패', res.msg)
@@ -39,56 +40,60 @@ export default function LoginScreen_Phone({ navigation }: LoginScreen_PhoneProp)
         if (cleaned.length <= 3) {
             return cleaned;
         } else if (cleaned.length <= 7) {
-            return `${cleaned.slice(0,3)}-${cleaned.slice(3)}`;
+            return `${cleaned.slice(0, 3)}-${cleaned.slice(3)}`;
         } else {
             return `${cleaned.slice(0, 3)}-${cleaned.slice(3, 7)}-${cleaned.slice(7, 11)}`;
         }
     }
 
+    const Container = Platform.OS === 'ios' ? SafeAreaView : View;
+
     return (
-        <View style={styles.container}>
-            {/* 네비게이션바 */}
-            <CustomNavigationBar
-                title={'로그인'}
-                isBack={true}
-            />
+        <SafeAreaProvider>
+            <Container style={styles.container}>
+                {/* 네비게이션바 */}
+                <CustomNavigationBar
+                    title={'로그인'}
+                    isBack={true}
+                />
 
-            <Text
-                style={{
-                    padding: 20,
-                    marginTop: 40,
-                }}
-            >
-                전화번호를 입력해주세요.
-            </Text>
-            <View
-                style={{ flexDirection: 'row', gap: 20, alignItems: 'center' }}
-            >
+                <Text
+                    style={{
+                        padding: 20,
+                        marginTop: 40,
+                    }}
+                >
+                    전화번호를 입력해주세요.
+                </Text>
+                <View
+                    style={{ flexDirection: 'row', gap: 20, alignItems: 'center' }}
+                >
+                    <TextInput
+                        placeholder='전화번호 입력'
+                        style={styles.textInput}
+                        keyboardType='numeric'
+                        onChangeText={(text) => setInputNumber(formatPhoneNumber(text))}
+                        value={inputNumber}
+                    />
+                    <Button
+                        title="보내기"
+                        onPress={handleSendButton}
+                    />
+                </View>
                 <TextInput
-                    placeholder='전화번호 입력'
+                    placeholder='비밀번호 입력'
                     style={styles.textInput}
-                    keyboardType='numeric'
-                    onChangeText={(text) => setInputNumber(formatPhoneNumber(text))}
-                    value={inputNumber}
+                    onChangeText={setInputPassword}
                 />
-                <Button
-                    title="보내기"
-                    onPress={handleSendButton}
-                />
-            </View>
-            <TextInput
-                placeholder='비밀번호 입력'
-                style={styles.textInput}
-                onChangeText={setInputPassword}
-            />
-            <View style={{ flex: 1 }} />
+                <View style={{ flex: 1 }} />
 
-            <Button
-                title="다음"
-                disabled={false}
-                onPress={handleNextButton}
-            />
-        </View>
+                <Button
+                    title="다음"
+                    disabled={false}
+                    onPress={handleNextButton}
+                />
+            </Container>
+        </SafeAreaProvider>
     )
 }
 
